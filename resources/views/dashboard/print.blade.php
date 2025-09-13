@@ -14,7 +14,7 @@
                                         <h1>{{projectNameHeader()}}</h1>
                                     </div>
                                     <div class="flex-shrink-0 mt-sm-0 mt-3">
-                                        <h3>Purchase Ledger</h3>
+                                        <h3>Ledger</h3>
                                     </div>
                                 </div>
                             </div>
@@ -24,21 +24,27 @@
                             <div class="card-body p-4">
                                 <div class="row g-3">
                                     <!--end col-->
-                                    <div class="col-lg-3 col-6">
+                                    <div class="col-3">
                                         <p class="text-muted mb-2 text-uppercase fw-semibold">From</p>
-                                        <h5 class="fs-14 mb-0">{{ date("d M Y", strtotime($from)) }}</h5>
+                                        <h5 class="fs-14 mb-0"><span id="invoice-date">{{ date("d M Y", strtotime($from)) }}</span> </h5>
                                     </div>
-                                    <!--end col-->
-                                    <div class="col-lg-3 col-6">
+                                    <div class="col-3">
                                         <p class="text-muted mb-2 text-uppercase fw-semibold">To</p>
-                                        <h5 class="fs-14 mb-0">{{date("d M Y", strtotime($to))}}</h5>
+                                        <h5 class="fs-14 mb-0"><span id="invoice-date">{{ date("d M Y", strtotime($to)) }}</span> </h5>
                                     </div>
                                     <!--end col-->
-                                    <div class="col-lg-3 col-6">
-                                        <p class="text-muted mb-2 text-uppercase fw-semibold">Printed On</p>
-                                        <h5 class="fs-14 mb-0"><span id="total-amount">{{ date("d M Y") }}</span></h5>
-                                        {{-- <h5 class="fs-14 mb-0"><span id="total-amount">{{ \Carbon\Carbon::now()->format('h:i A') }}</span></h5> --}}
+                                    <div class="col-3">
+                                        <p class="text-muted mb-2 text-uppercase fw-semibold">Previous Balance</p>
+                                        <h5 class="fs-14 mb-0"><span id="invoice-date">Rs. {{ number_format($pre_balance) }}</span> </h5>
+                                        
                                     </div>
+                                    <div class="col-3">
+                                        <p class="text-muted mb-2 text-uppercase fw-semibold">Current Balance</p>
+                                        <h5 class="fs-14 mb-0"><span id="invoice-date">Rs. {{ number_format($cur_balance) }}</span> </h5>
+                                        
+                                    </div>
+                                    <!--end col-->
+                                   
                                     <!--end col-->
                                 </div>
                                 <!--end row-->
@@ -51,51 +57,41 @@
                                     <table class="table table-borderless text-center table-nowrap align-middle mb-0">
                                         <thead>
                                             <tr class="table-active">
-                                                <th scope="col">#</th>
-                                                <th scope="col">ID</th>
+                                                <th scope="col" style="width: 50px;">#</th>
                                                 <th scope="col">Date</th>
-                                                <th scope="col">Maker</th>
-                                                <th scope="col">Model</th>
-                                                <th scope="col">Year</th>
-                                                <th scope="col">Price</th>
-                                                <th scope="col">Tax</th>
-                                                <th scope="col">Auction Fee</th>
-                                                <th scope="col">Auction Tax</th>
-                                                <th scope="col">Transport Charges</th>
-                                                <th scope="col">Net</th>
+                                                <th scope="col" class="text-start">Description</th>
+                                                <th scope="col" class="text-end">Credit</th>
+                                                <th scope="col" class="text-end">Debit</th>
+                                                <th scope="col" class="text-end">Balance</th>
                                             </tr>
                                         </thead>
                                         <tbody id="products-list">
-                                           
-                                        @foreach ($purchases as $key => $purchase)
+                                            @php
+                                                $balance = $pre_balance;
+                                            @endphp
+                                        @foreach ($transactions as $key => $trans)
+                                        @php
+                                                    $balance += $trans->cr;
+                                                    $balance -= $trans->db;
+                                                    $trans->date = date('d M Y', strtotime($trans->date));
+
+                                                    if ($trans->cr > 0) {
+                                                        $notes = "Container # " . $trans->container . " : " . $trans->notes;
+                                            }
+                                            if ($trans->db > 0) {
+                                                $notes = "Received UAE " . number_format($trans->uae) . " Rate " . number_format($trans->rate, 2) . " : " . $trans->notes;
+                                            }
+                                        @endphp
                                             <tr>
                                                 <td>{{ $key+1 }}</td>
-                                                <td> {{$purchase->id}}</td>
-                                                <td>{{ date('d M Y', strtotime($purchase->date)) }}</td>
-                                                <td>{{$purchase->maker}}</td>
-                                                <td>{{$purchase->model}}</td>
-                                                <td>{{$purchase->year}}</td>
-                                                <td class="text-end">{{ number_format($purchase->price) }}</td>
-                                                <td class="text-end">{{ number_format($purchase->ptax) }}</td>
-                                                <td class="text-end">{{ number_format($purchase->afee) }}</td>
-                                                <td class="text-end">{{ number_format($purchase->atax) }}</td>
-                                                <td class="text-end">{{ number_format($purchase->transport_charges) }}</td>
-                                                <td class="text-end">{{ number_format($purchase->total) }}</td>
+                                                <td>{{ $trans->date }}</td>
+                                                <td class="text-start">{{ $notes }}</td>
+                                                <td class="text-end">{{ number_format($trans->cr) }}</td>
+                                                <td class="text-end">{{ number_format($trans->db) }}</td>
+                                                <td class="text-end">{{ number_format($balance) }}</td>
                                             </tr>
                                         @endforeach
                                         </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <th colspan="6" class="text-end p-1 m-0">Total</th>
-                                                <th class="text-end p-1 m-0">{{ number_format($purchases->sum('price')) }}</th>
-                                                <th class="text-end p-1 m-0">{{ number_format($purchases->sum('ptax')) }}</th>
-                                                <th class="text-end p-1 m-0">{{ number_format($purchases->sum('afee')) }}</th>
-                                                <th class="text-end p-1 m-0">{{ number_format($purchases->sum('atax')) }}</th>
-                                                <th class="text-end p-1 m-0">{{ number_format($purchases->sum('transport_charges')) }}</th>
-                                                <th class="text-end p-1 m-0">{{ number_format($purchases->sum('total')) }}</th>
-                                              
-                                            </tr>
-                                        </tfoot>
                                     </table><!--end table-->
                                 </div>
                             </div>

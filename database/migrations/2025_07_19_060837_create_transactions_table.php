@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('account_id')->constrained('accounts','id');
             $table->date('date');
-            $table->float('cr')->default(0);
-            $table->float('db')->default(0);
+            $table->decimal('cr', 15, 2)->default(0);
+            $table->decimal('db', 15, 2)->default(0);
             $table->text('notes')->nullable();
+            $table->decimal('rate', 15, 2)->default(1);
+            $table->decimal('uae', 15, 2)->default(0);
+            $table->string('container')->nullable();
             $table->bigInteger('refID');
             $table->timestamps();
         });

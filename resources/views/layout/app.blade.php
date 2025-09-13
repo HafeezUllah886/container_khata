@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg"
+<html lang="en" data-layout="horizontal" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg"
     data-sidebar-image="none" data-preloader="disable" data-theme="default" data-theme-colors="default">
 <head>
 
@@ -127,7 +127,7 @@
         <!-- ============================================================== -->
         <div class="main-content">
 
-            <div class="page-content">
+            <div class="page-content mt-lg-4">
                 <div class="container-fluid">
 
                     @yield('content')
