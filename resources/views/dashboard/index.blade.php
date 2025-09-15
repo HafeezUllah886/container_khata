@@ -140,17 +140,17 @@
                                                 <div class="modal-body">
                                                     <div class="form-group mt-2">
                                                         <label for="uae">UAE</label>
-                                                        <input type="number" name="uae" required id="uae1" oninput="updateAmount1()" value="{{ $transaction->uae }}"
+                                                        <input type="number" name="uae" required id="uae_{{ $transaction->id }}" oninput="update_amount1({{ $transaction->id }})" value="{{ $transaction->uae }}"
                                                             class="form-control">
                                                     </div>
                                                     <div class="form-group mt-2">
                                                         <label for="rate">Rate</label>
-                                                        <input type="number" name="rate" value="{{ $transaction->rate }}" oninput="updateAmount1()" required
-                                                            id="rate1" class="form-control">
+                                                        <input type="number" name="rate" value="{{ $transaction->rate }}" oninput="update_amount1({{ $transaction->id }})" required
+                                                            id="rate_{{ $transaction->id }}" class="form-control">
                                                     </div>
                                                     <div class="form-group mt-2">
                                                         <label for="amount_pkr">Amount</label>
-                                                        <input type="number" name="amount_pkr" readonly id="amount_pkr1" value="{{ $transaction->db }}"
+                                                        <input type="number" name="amount_pkr" readonly id="amount_pkr_{{ $transaction->id }}" value="{{ $transaction->db }}"
                                                             class="form-control">
                                                     </div>
                                                     <div class="form-group mt-2">
@@ -231,11 +231,11 @@
                     <div class="modal-body">
                         <div class="form-group mt-2">
                             <label for="uae">UAE</label>
-                            <input type="number" name="uae" oninput="updateAmount()" required id="uae" class="form-control">
+                            <input type="number" name="uae" oninput="update_amount()" required id="uae" class="form-control">
                         </div>
                         <div class="form-group mt-2">
                             <label for="rate">Rate</label>
-                            <input type="number" name="rate" value="1" oninput="updateAmount()" required id="rate"
+                            <input type="number" name="rate" value="1" oninput="update_amount()" required id="rate"
                                 class="form-control">
                         </div>
                         <div class="form-group mt-2">
@@ -267,22 +267,23 @@
     <script src="{{ asset('assets/libs/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ asset('assets/js/pages/dashboard-ecommerce.init.js') }}"></script>
     <script>
+        // Move functions to global scope
+        function update_amount() {
+            var uae = $('#uae').val();
+            var rate = $('#rate').val();
+            var amount = uae * rate;
+            $('#amount_pkr').val(amount);
+        }
+        
+        function update_amount1(id) {
+            var uae = $('#uae_' + id).val();
+            var rate = $('#rate_' + id).val();
+            var amount = uae * rate;
+            $('#amount_pkr_' + id).val(amount);
+        }
+        
         $(document).ready(function() {
-            function updateAmount() {
-                var uae = $('#uae').val();
-                var rate = $('#rate').val();
-                var amount = uae * rate;
-                $('#amount_pkr').val(amount);
-            }
-           
-       
-            function updateAmount1() {
-                var uae = $('#uae1').val();
-                var rate = $('#rate1').val();
-                var amount = uae * rate;
-                $('#amount_pkr1').val(amount);
-            }
-            
+            // Document ready code can go here if needed
         });
     </script>
 @endsection
