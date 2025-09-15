@@ -231,16 +231,16 @@
                     <div class="modal-body">
                         <div class="form-group mt-2">
                             <label for="uae">UAE</label>
-                            <input type="number" name="uae" required id="uae" class="form-control">
+                            <input type="number" name="uae" required id="uae1" class="form-control">
                         </div>
                         <div class="form-group mt-2">
                             <label for="rate">Rate</label>
-                            <input type="number" name="rate" value="1" required id="rate"
+                            <input type="number" name="rate" value="1" required id="rate1"
                                 class="form-control">
                         </div>
                         <div class="form-group mt-2">
                             <label for="amount_pkr">Amount</label>
-                            <input type="number" name="amount_pkr" readonly id="amount_pkr" class="form-control">
+                            <input type="number" name="amount_pkr" readonly id="amount_pkr1" class="form-control">
                         </div>
                         <div class="form-group mt-2">
                             <label for="date">Date</label>
@@ -279,6 +279,19 @@
             });
             $('#rate').on('input', function() {
                 updateAmount();
+            });
+       
+            function updateAmount1() {
+                var uae = $('#uae1').val();
+                var rate = $('#rate1').val();
+                var amount = uae * rate;
+                $('#amount_pkr1').val(amount);
+            }
+            $('#uae1').on('input', function() {
+                updateAmount1();
+            });
+            $('#rate1').on('input', function() {
+                updateAmount1();
             });
         });
     </script>
