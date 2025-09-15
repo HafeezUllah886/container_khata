@@ -22,6 +22,12 @@ class dashboardController extends Controller
 
     public function addAmount(Request $request)
     {
+
+        $check = transactions::where('container', $request->containerID)->first();
+        if($check)
+        {
+            return redirect()->back()->with('error', 'Container already exists');
+        }
         $ref = getRef();
        
         $transaction = new transactions();
@@ -55,6 +61,13 @@ class dashboardController extends Controller
 
     public function editAmount(Request $request)
     {
+
+        
+        $check = transactions::where('container', $request->containerID)->where('id', '!=', $request->id)->first();
+        if($check)
+        {
+            return redirect()->back()->with('error', 'Container already exists');
+        }
         $transaction = transactions::find($request->id);
         $transaction->date = $request->date;
         $transaction->cr = $request->amount;
