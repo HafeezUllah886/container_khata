@@ -12,7 +12,7 @@ class dashboardController extends Controller
         $from = $request->from ?? firstDayOfMonth();
         $to = $request->to ?? date('Y-m-d');
 
-        $transactions =  transactions::whereBetween('date', [$from, $to])->get();
+        $transactions =  transactions::whereBetween('date', [$from, $to])->orderBy('date', 'asc')->get();
 
         $pre_balance = transactions::where('date', '<', $from)->sum('cr') - transactions::where('date', '<', $from)->sum('db');
         
@@ -26,7 +26,7 @@ class dashboardController extends Controller
         $check = transactions::where('container', $request->containerID)->first();
         if($check)
         {
-            return redirect()->back()->with('error', 'Container already exists');
+            return redirect()->back()->with('error', 'Container already exists '.date('d M Y', strtotime($check->date)));
         }
         $ref = getRef();
        
@@ -66,7 +66,7 @@ class dashboardController extends Controller
         $check = transactions::where('container', $request->containerID)->where('id', '!=', $request->id)->first();
         if($check)
         {
-            return redirect()->back()->with('error', 'Container already exists');
+            return redirect()->back()->with('error', 'Container already exists '.date('d M Y', strtotime($check->date)));
         }
         $transaction = transactions::find($request->id);
         $transaction->date = $request->date;
