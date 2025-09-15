@@ -140,17 +140,17 @@
                                                 <div class="modal-body">
                                                     <div class="form-group mt-2">
                                                         <label for="uae">UAE</label>
-                                                        <input type="number" name="uae" required id="uae" value="{{ $transaction->uae }}"
+                                                        <input type="number" name="uae" required id="uae1" oninput="updateAmount1()" value="{{ $transaction->uae }}"
                                                             class="form-control">
                                                     </div>
                                                     <div class="form-group mt-2">
                                                         <label for="rate">Rate</label>
-                                                        <input type="number" name="rate" value="{{ $transaction->rate }}" required
-                                                            id="rate" class="form-control">
+                                                        <input type="number" name="rate" value="{{ $transaction->rate }}" oninput="updateAmount1()" required
+                                                            id="rate1" class="form-control">
                                                     </div>
                                                     <div class="form-group mt-2">
                                                         <label for="amount_pkr">Amount</label>
-                                                        <input type="number" name="amount_pkr" readonly id="amount_pkr" value="{{ $transaction->db }}"
+                                                        <input type="number" name="amount_pkr" readonly id="amount_pkr1" value="{{ $transaction->db }}"
                                                             class="form-control">
                                                     </div>
                                                     <div class="form-group mt-2">
@@ -231,16 +231,16 @@
                     <div class="modal-body">
                         <div class="form-group mt-2">
                             <label for="uae">UAE</label>
-                            <input type="number" name="uae" required id="uae1" class="form-control">
+                            <input type="number" name="uae" oninput="updateAmount()" required id="uae" class="form-control">
                         </div>
                         <div class="form-group mt-2">
                             <label for="rate">Rate</label>
-                            <input type="number" name="rate" value="1" required id="rate1"
+                            <input type="number" name="rate" value="1" oninput="updateAmount()" required id="rate"
                                 class="form-control">
                         </div>
                         <div class="form-group mt-2">
                             <label for="amount_pkr">Amount</label>
-                            <input type="number" name="amount_pkr" readonly id="amount_pkr1" class="form-control">
+                            <input type="number" name="amount_pkr" readonly id="amount_pkr" class="form-control">
                         </div>
                         <div class="form-group mt-2">
                             <label for="date">Date</label>
@@ -274,12 +274,7 @@
                 var amount = uae * rate;
                 $('#amount_pkr').val(amount);
             }
-            $('#uae').on('input', function() {
-                updateAmount();
-            });
-            $('#rate').on('input', function() {
-                updateAmount();
-            });
+           
        
             function updateAmount1() {
                 var uae = $('#uae1').val();
@@ -287,12 +282,7 @@
                 var amount = uae * rate;
                 $('#amount_pkr1').val(amount);
             }
-            $('#uae1').on('input', function() {
-                updateAmount1();
-            });
-            $('#rate1').on('input', function() {
-                updateAmount1();
-            });
+            
         });
     </script>
 @endsection
