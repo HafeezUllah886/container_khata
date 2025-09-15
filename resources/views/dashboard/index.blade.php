@@ -60,16 +60,16 @@
                                         $notes = "Container # " . $transaction->container . " : " . $transaction->notes;
                                     }
                                     if ($transaction->db > 0) {
-                                        $notes = "Received UAE " . number_format($transaction->uae) . " Rate " . number_format($transaction->rate, 2) . " : " . $transaction->notes;
+                                        $notes = "Received UAE " . number_format($transaction->uae) . " Rate " . number_format($transaction->rate, 4) . " : " . $transaction->notes;
                                     }
                                 @endphp
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $transaction->date }}</td>
                                     <td>{{ $notes }}</td>
-                                    <td>{{ number_format($transaction->cr) }}</td>
-                                    <td>{{ number_format($transaction->db) }}</td>
-                                    <td>{{ number_format($balance) }}</td>
+                                    <td>{{ number_format($transaction->cr,2) }}</td>
+                                    <td>{{ number_format($transaction->db,2) }}</td>
+                                    <td>{{ number_format($balance,2) }}</td>
                                     <td>
 
                                         <button type="button" data-bs-toggle="modal"
@@ -101,7 +101,7 @@
                                                     </div>
                                                     <div class="form-group mt-2">
                                                         <label for="amount">Amount</label>
-                                                        <input type="number" name="amount" required id="amount" value="{{ $transaction->cr }}"
+                                                        <input type="number" name="amount" required id="amount" step='any' value="{{ $transaction->cr }}"
                                                             class="form-control">
                                                     </div>
                                                     <div class="form-group mt-2">
@@ -140,17 +140,17 @@
                                                 <div class="modal-body">
                                                     <div class="form-group mt-2">
                                                         <label for="uae">UAE</label>
-                                                        <input type="number" name="uae" required id="uae_{{ $transaction->id }}" oninput="update_amount1({{ $transaction->id }})" value="{{ $transaction->uae }}"
+                                                        <input type="number" name="uae" required id="uae_{{ $transaction->id }}" step='any' oninput="update_amount1({{ $transaction->id }})" value="{{ $transaction->uae }}"
                                                             class="form-control">
                                                     </div>
                                                     <div class="form-group mt-2">
                                                         <label for="rate">Rate</label>
-                                                        <input type="number" name="rate" value="{{ $transaction->rate }}" oninput="update_amount1({{ $transaction->id }})" required
+                                                        <input type="number" name="rate" value="{{ $transaction->rate }}" step='any' oninput="update_amount1({{ $transaction->id }})" required
                                                             id="rate_{{ $transaction->id }}" class="form-control">
                                                     </div>
                                                     <div class="form-group mt-2">
                                                         <label for="amount_pkr">Amount</label>
-                                                        <input type="number" name="amount_pkr" readonly id="amount_pkr_{{ $transaction->id }}" value="{{ $transaction->db }}"
+                                                        <input type="number" name="amount_pkr" step='any' readonly id="amount_pkr_{{ $transaction->id }}" value="{{ $transaction->db }}"
                                                             class="form-control">
                                                     </div>
                                                     <div class="form-group mt-2">
@@ -198,7 +198,7 @@
                         </div>
                         <div class="form-group mt-2">
                             <label for="amount">Amount</label>
-                            <input type="number" name="amount" required id="amount" class="form-control">
+                            <input type="number" name="amount" required step='any' id="amount" class="form-control">
                         </div>
                         <div class="form-group mt-2">
                             <label for="date">Date</label>
@@ -231,16 +231,16 @@
                     <div class="modal-body">
                         <div class="form-group mt-2">
                             <label for="uae">UAE</label>
-                            <input type="number" name="uae" oninput="update_amount()" required id="uae" class="form-control">
+                            <input type="number" name="uae" oninput="update_amount()" step='any' required id="uae" class="form-control">
                         </div>
                         <div class="form-group mt-2">
                             <label for="rate">Rate</label>
-                            <input type="number" name="rate" value="1" oninput="update_amount()" required id="rate"
+                            <input type="number" name="rate" value="1" step='any' oninput="update_amount()" required id="rate"
                                 class="form-control">
                         </div>
                         <div class="form-group mt-2">
                             <label for="amount_pkr">Amount</label>
-                            <input type="number" name="amount_pkr" readonly id="amount_pkr" class="form-control">
+                            <input type="number" name="amount_pkr" readonly step='any' id="amount_pkr" class="form-control">
                         </div>
                         <div class="form-group mt-2">
                             <label for="date">Date</label>
